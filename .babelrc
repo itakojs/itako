@@ -1,0 +1,22 @@
+{
+  "plugins": [
+    "transform-object-assign"
+  ],
+  "env": {
+    "development": {
+      "presets": [
+        "es2015",
+        "stage-1"
+      ],
+      "plugins": [
+        "espower"
+      ]
+    },
+    "production": {
+      "presets": [
+        "es2015-rollup",
+        "stage-1"
+      ]
+    }
+  }
+}
