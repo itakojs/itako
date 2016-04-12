@@ -19,7 +19,7 @@ export const chunkTransformer = {
         return token;
       }
 
-      return Array.from(token.value).map((chunk) =>
+      return [].slice.call(token.value).map((chunk) =>
         Itako.createToken('text', chunk, token.options, { transformer: this })
       );
     });
