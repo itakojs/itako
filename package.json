@@ -70,7 +70,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/59naga/itako.git"
+    "url": "https://github.com/itakojs/itako.git"
   },
   "keywords": [
     "itako",
@@ -80,7 +80,7 @@
   "author": "59naga <i59naga@icloud.com> (http://berabou.me/)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/59naga/itako/issues"
+    "url": "https://github.com/itakojs/itako/issues"
   },
-  "homepage": "https://github.com/59naga/itako#readme"
+  "homepage": "https://github.com/itakojs/itako#readme"
 }
