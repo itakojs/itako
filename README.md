@@ -8,8 +8,8 @@ Itako
   <a href="https://travis-ci.org/itakojs/itako">
     <img src="http://img.shields.io/travis/itakojs/itako.svg?style=flat-square">
   </a>
-  <a href="https://ci.appveyor.com/project/itakojs/itako">
-    <img src="https://img.shields.io/appveyor/ci/itakojs/itako.svg?style=flat-square">
+  <a href="https://ci.appveyor.com/project/59naga/itako-hvy9q">
+    <img src="https://img.shields.io/appveyor/ci/59naga/itako-hvy9q.svg?style=flat-square">
   </a>
   <a href="https://codeclimate.com/github/itakojs/itako/coverage">
     <img src="https://img.shields.io/codeclimate/github/itakojs/itako.svg?style=flat-square">
