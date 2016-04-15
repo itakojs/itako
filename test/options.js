@@ -1,6 +1,7 @@
 // dependencies
 import test from 'ava';
 import { throws } from 'assert-exception';
+import * as plugins from './mock-plugins';
 
 // target
 import Itako from '../src';
@@ -50,4 +51,11 @@ test('itako.opts should can be performed writing, reading', (t) => {
   t.true(itako.getOption(path) === true);
 
   t.true(itako.getOption('nothing', false) === false);
+});
+
+test('if specify a 2nd argument of itako.read, it should be used as an option of the transform', async (t) => {
+  const itako = new Itako([plugins.noopReader]);
+  const tokens = await itako.read('hoge', { volume: 1 });
+
+  t.true(tokens[0].options.volume === 1);
 });

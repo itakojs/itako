@@ -113,22 +113,18 @@ export default class Itako {
   * @public
   * @method read
   * @param {string} source - a original text
-  * @param {object} [options={}] - change the default options of the transform/read method
+  * @param {object} [transformOptions={}] - change the default options of the transform/read method
   * @returns {promise<object>} readEnd - return the tokens after the end of speak
   */
-  read(source, options = {}) {
-    const transformOptions = Object.assign(
+  read(source, transformOptions = {}) {
+    const opts = Object.assign(
       {},
       _get(this[OPTS], 'transform', {}),
-      _get(options, 'transform', {}),
-    );
-    const readOptions = Object.assign(
-      {},
-      _get(this[OPTS], 'read', {}),
-      _get(options, 'read', {}),
+      transformOptions,
     );
 
-    const tokens = this.transform(source, transformOptions);
+    const tokens = this.transform(source, opts);
+    const readOptions = _get(this[OPTS], 'read', {});
     if (readOptions.serial) {
       if (this.current === undefined) {
         this.current = Promise.resolve();
