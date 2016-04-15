@@ -46,7 +46,7 @@ test('if specify 2nd argument, should use as a initial token options', (t) => {
 });
 
 test('if define a transfomer, it should be dependent on the return value of the method of transfomer', (t) => {
-  const itako = new Itako([plugins.cloneTransformer]);
+  const itako = new Itako([], [plugins.cloneTransformer]);
   const words = 'hi';
   const tokens = itako.transform(words);
 
@@ -57,7 +57,7 @@ test('if define a transfomer, it should be dependent on the return value of the 
 });
 
 test('if transformers.clone.disable is true, should ignore the clone transformer', (t) => {
-  const itako = new Itako([plugins.cloneTransformer]);
+  const itako = new Itako([], [plugins.cloneTransformer]);
   itako.setOption('transformers.clone.disable', true);
 
   const words = 'hi';
@@ -70,7 +70,7 @@ test('if transformers.clone.disable is true, should ignore the clone transformer
 });
 
 test('if transformers.clone.options is define, it should be used as an option to the clone transformer', (t) => {
-  const itako = new Itako([plugins.cloneTransformer]);
+  const itako = new Itako([], [plugins.cloneTransformer]);
   itako.setOption('transformers.clone.options', { noop: true });
 
   const words = 'hi';
@@ -83,7 +83,7 @@ test('if transformers.clone.options is define, it should be used as an option to
 });
 
 test('if the transformer returns an array rather than token, the tokens should keep the 1d', (t) => {
-  const itako = new Itako([plugins.cloneTransformer, plugins.chunkTransformer]);
+  const itako = new Itako([], [plugins.cloneTransformer, plugins.chunkTransformer]);
   const words = 'hi';
   const tokens = itako.transform(words);
 
@@ -98,7 +98,7 @@ test('if the transformer returns an array rather than token, the tokens should k
 });
 
 test('if the transformer returns another tokens, should return it as regular result', (t) => {
-  const itako = new Itako([plugins.allReplaceTransformer]);
+  const itako = new Itako([], [plugins.allReplaceTransformer]);
   const words = 'hi';
   const tokens = itako.transform(words);
 

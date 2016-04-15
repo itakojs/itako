@@ -17,11 +17,11 @@ export default class Itako {
   }
 
   /**
-  * @param {transformers[]} transformers - a token transform functions
-  * @param {readers[]} readers - a token read functions
-  * @param {object} options - a customize behavior
+  * @param {readers[]} [readers=[]] - a token read functions
+  * @param {transformers[]} [transformers=[]] - a token transform functions
+  * @param {object} [options={}] - a customize behavior
   */
-  constructor(transformers = [], readers = [], options = {}) {
+  constructor(readers = [], transformers = [], options = {}) {
     this[TRANSFORMERS] = transformers;
     this[READERS] = readers;
     this[OPTS] = { ...options };
