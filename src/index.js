@@ -28,7 +28,6 @@ export default class Itako {
   }
 
   /**
-  * @public
   * @method validatePath
   * @param {any} path - a validate target
   * @throws {TypeError} will throw error unless path is string and array
@@ -42,7 +41,6 @@ export default class Itako {
   }
 
   /**
-  * @public
   * @method setOption
   * @param {string|array} path - a option path
   * @param {any} value - a option value
@@ -56,7 +54,6 @@ export default class Itako {
   }
 
   /**
-  * @public
   * @method getOption
   * @param {string|array} path - a option path
   * @param {any} defaultValue - a return value unless path is defined
@@ -69,7 +66,6 @@ export default class Itako {
   }
 
   /**
-  * @public
   * @method getOptions
   * @returns {object} options - the all options
   */
@@ -80,7 +76,6 @@ export default class Itako {
   /**
   * to process the source with transform method of transformers
   *
-  * @public
   * @method transform
   * @param {string} source - a original text
   * @param {object} [options={}] - a token default options
@@ -110,7 +105,6 @@ export default class Itako {
   /**
   * the source after the transform in transformers, read in readers (higher level api)
   *
-  * @public
   * @method read
   * @param {string} source - a original text
   * @param {object} [transformOptions={}] - change the default options of the transform/read method
@@ -148,7 +142,6 @@ export default class Itako {
   * it stops processing when the promise was returned
   * if doesn't return a promise, it throw the exception
   *
-  * @public
   * @method read
   * @param {string} tokens - a transformd tokens
   * @returns {promise<undefined>} readEnd - fulfill after the end of speak
@@ -156,36 +149,53 @@ export default class Itako {
   readSerial(tokens) {
     return tokens.reduce(
       (promise, currentToken) => promise.then(() => {
-        const readerFound = (token) => token && typeof token.then !== 'undefined';
-        const promiseOrToken = this[READERS].reduce(
-          (token, reader) => {
-            if (readerFound(token)) {
-              return token;
-            }
-
-            const name = reader.name || 'anonymous';
-            const { disable, options: opts } = this.getOption(['readers', name], {});
-            if (disable) {
-              return token;
-            }
-            const result = reader.read(token, opts);
-            if (readerFound(result)) {
-              token.setMeta('reader', reader);
-            }
-            return result;
-          },
-          currentToken,
-        );
+        const token = this.readToken(currentToken);
 
         // if the promise isn't returned by a plugin read method, throw an exception
-        if (readerFound(promiseOrToken) === false) {
-          const { type, value } = promiseOrToken;
+        if (this.isPromise(token) === false) {
+          const { type, value } = token;
           return Promise.reject(new Error(`unexpected token "${type}:${value}"`));
         }
 
-        return promiseOrToken;
+        return token;
       }),
       Promise.resolve(null),
+    );
+  }
+
+  /**
+  * @method isPromise
+  * @param {token|promise} tokenOrPromise - a itako-token instance / return value of reader.read
+  * @returns {boolean} found - true if argument the Promise
+  */
+  isPromise(tokenOrPromise) {
+    return tokenOrPromise && typeof tokenOrPromise.then !== 'undefined';
+  }
+
+  /**
+  * @method readToken
+  * @param {token} tokenInstance - read aloud in reader.read
+  * @returns {token|promise} tokenOrPromise - a itako-token instance / return value of reader.read
+  */
+  readToken(tokenInstance) {
+    return this[READERS].reduce(
+      (token, reader) => {
+        if (this.isPromise(token)) {
+          return token;
+        }
+
+        const name = reader.name || 'anonymous';
+        const { disable, options: opts } = this.getOption(['readers', name], {});
+        if (disable) {
+          return token;
+        }
+        const result = reader.read(token, opts);
+        if (this.isPromise(result)) {
+          token.setMeta('reader', reader);
+        }
+        return result;
+      },
+      tokenInstance,
     );
   }
 }
