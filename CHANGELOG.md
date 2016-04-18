@@ -1,3 +1,13 @@
+<a name="0.1.2"></a>
+## [0.1.2](https://github.com/itakojs/itako/compare/v0.1.1...v0.1.2) (2016-04-18)
+
+
+### Features
+
+* **Token::setOptions:** up itako-token@0.2.0 ([13e2cb4](https://github.com/itakojs/itako/commit/13e2cb4))
+
+
+
 <a name="0.1.1"></a>
 ## [0.1.1](https://github.com/itakojs/itako/compare/v0.1.0...v0.1.1) (2016-04-16)
 
