@@ -55,7 +55,7 @@
     "conventional-github-releaser": "^1.1.1",
     "eslint": "^2.6.0",
     "eslint-config-airbnb": "^7.0.0",
-    "itako-token": "^0.1.0",
+    "itako-token": "^0.2.0",
     "lodash.flattendeep": "^4.2.0",
     "lodash.get": "^4.2.1",
     "lodash.set": "^4.1.0",
