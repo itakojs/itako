@@ -5,11 +5,6 @@ import _flattenDeep from 'lodash.flattendeep';
 import _get from 'lodash.get';
 import _set from 'lodash.set';
 
-// private
-const TRANSFORMERS = Symbol();
-const READERS = Symbol();
-const OPTS = Symbol();
-
 // @class Reader
 export default class Itako {
   static createToken(...args) {
@@ -22,9 +17,9 @@ export default class Itako {
   * @param {object} [options={}] - a customize behavior
   */
   constructor(readers = [], transformers = [], options = {}) {
-    this[TRANSFORMERS] = transformers;
-    this[READERS] = readers;
-    this[OPTS] = { ...options };
+    this.transformers = transformers;
+    this.readers = readers;
+    this.options = { ...options };
   }
 
   /**
@@ -49,7 +44,7 @@ export default class Itako {
   */
   setOption(path, value) {
     this.validatePath(path);
-    _set(this[OPTS], path, value);
+    _set(this.options, path, value);
     return this;
   }
 
@@ -62,7 +57,7 @@ export default class Itako {
   */
   getOption(path, defaultValue) {
     this.validatePath(path);
-    return _get(this[OPTS], path, defaultValue);
+    return _get(this.options, path, defaultValue);
   }
 
   /**
@@ -70,7 +65,7 @@ export default class Itako {
   * @returns {object} options - the all options
   */
   getOptions() {
-    return { ...this[OPTS] };
+    return { ...this.options };
   }
 
   /**
@@ -88,7 +83,7 @@ export default class Itako {
       options,
     );
 
-    return this[TRANSFORMERS].reduce(
+    return this.transformers.reduce(
       (tokens, transformr) => {
         const name = transformr.name || 'anonymous';
         const { disable, options: opts } = this.getOption(['transformers', name], {});
@@ -113,12 +108,12 @@ export default class Itako {
   read(source, transformOptions = {}) {
     const opts = Object.assign(
       {},
-      _get(this[OPTS], 'transform', {}),
+      _get(this.options, 'transform', {}),
       transformOptions,
     );
 
     const tokens = this.transform(source, opts);
-    const readOptions = _get(this[OPTS], 'read', {});
+    const readOptions = _get(this.options, 'read', {});
     if (readOptions.serial) {
       if (this.current === undefined) {
         this.current = Promise.resolve();
@@ -178,7 +173,7 @@ export default class Itako {
   * @returns {token|promise} tokenOrPromise - a itako-token instance / return value of reader.read
   */
   readToken(tokenInstance) {
-    return this[READERS].reduce(
+    return this.readers.reduce(
       (token, reader) => {
         if (this.isPromise(token)) {
           return token;
