@@ -1,3 +1,14 @@
+<a name="0.1.3"></a>
+## [0.1.3](https://github.com/itakojs/itako/compare/v0.1.2...v0.1.3) (2016-04-19)
+
+
+### Features
+
+* **Symbol:** remove Symbol for Windows/IE10 ([69ac8e9](https://github.com/itakojs/itako/commit/69ac8e9))
+* **Token:** up itako-token@0.3.0 ([ef98b0b](https://github.com/itakojs/itako/commit/ef98b0b))
+
+
+
 <a name="0.1.2"></a>
 ## [0.1.2](https://github.com/itakojs/itako/compare/v0.1.1...v0.1.2) (2016-04-18)
 
