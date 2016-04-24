@@ -17,24 +17,24 @@ test('if the path is invalid, it should throw an exception', (t) => {
   const expectedMessage = 'path is must be string or array';
 
   // set
-  t.true(throws(() => {itako.setOption();}).message === expectedMessage);
-  t.true(throws(() => {itako.setOption(1);}).message === expectedMessage);
-  t.true(throws(() => {itako.setOption(null);}).message === expectedMessage);
-  t.true(throws(() => {itako.setOption({});}).message === expectedMessage);
-  t.true(throws(() => {itako.setOption(() => {});}).message === expectedMessage);
+  t.true(throws(() => { itako.setOption(); }).message === expectedMessage);
+  t.true(throws(() => { itako.setOption(1); }).message === expectedMessage);
+  t.true(throws(() => { itako.setOption(null); }).message === expectedMessage);
+  t.true(throws(() => { itako.setOption({}); }).message === expectedMessage);
+  t.true(throws(() => { itako.setOption(() => {}); }).message === expectedMessage);
 
-  t.true(throws(() => {itako.setOption('');}).message === undefined);
-  t.true(throws(() => {itako.setOption([]);}).message === undefined);
+  t.true(throws(() => { itako.setOption(''); }).message === undefined);
+  t.true(throws(() => { itako.setOption([]); }).message === undefined);
 
   // get
-  t.true(throws(() => {itako.getOption();}).message === expectedMessage);
-  t.true(throws(() => {itako.getOption(1);}).message === expectedMessage);
-  t.true(throws(() => {itako.getOption(null);}).message === expectedMessage);
-  t.true(throws(() => {itako.getOption({});}).message === expectedMessage);
-  t.true(throws(() => {itako.getOption(() => {});}).message === expectedMessage);
+  t.true(throws(() => { itako.getOption(); }).message === expectedMessage);
+  t.true(throws(() => { itako.getOption(1); }).message === expectedMessage);
+  t.true(throws(() => { itako.getOption(null); }).message === expectedMessage);
+  t.true(throws(() => { itako.getOption({}); }).message === expectedMessage);
+  t.true(throws(() => { itako.getOption(() => {}); }).message === expectedMessage);
 
-  t.true(throws(() => {itako.getOption('');}).message === undefined);
-  t.true(throws(() => {itako.getOption([]);}).message === undefined);
+  t.true(throws(() => { itako.getOption(''); }).message === undefined);
+  t.true(throws(() => { itako.getOption([]); }).message === undefined);
 });
 
 test('getOptions should return all options as a new object', (t) => {
