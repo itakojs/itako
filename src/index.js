@@ -6,6 +6,7 @@ import _get from 'lodash.get';
 import _set from 'lodash.set';
 
 // @class Reader
+// @extends AsyncEmitter (soon)
 export default class Itako {
   static createToken(...args) {
     return new Token(...args);
@@ -45,6 +46,16 @@ export default class Itako {
   setOption(path, value) {
     this.validatePath(path);
     _set(this.options, path, value);
+    return this;
+  }
+
+  /**
+  * @method setOptions
+  * @param {object} options - a override options
+  * @returns {this} this - the self instance
+  */
+  setOptions(options = {}) {
+    this.options = Object.assign({}, this.options, options);
     return this;
   }
 
