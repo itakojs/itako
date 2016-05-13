@@ -85,3 +85,21 @@ test('if specify options.read.serial is true, should be read serially', async (t
   t.true(results[1] - results[0] >= plugins.delayReader.delay);
   t.true(results[2] - results[1] >= plugins.delayReader.delay);
 });
+
+test('if specify options.read.preload is true, should be execute reader.preload in parallely', async (t) => {
+  const itako = new Itako([plugins.preloadReader]).setOptions({
+    read: {
+      serial: true,
+      preload: true,
+    },
+  });
+  const tokens = [
+    Itako.createToken('text', 'a'),
+    Itako.createToken('text', 'b'),
+    Itako.createToken('text', 'c'),
+  ];
+
+  const [a, b, c] = await itako.read(tokens);
+  t.true(b.meta.preloadBegin - a.meta.preloadBegin < plugins.preloadReader.delay);
+  t.true(c.meta.preloadBegin - b.meta.preloadBegin < plugins.preloadReader.delay);
+});

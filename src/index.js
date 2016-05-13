@@ -109,10 +109,10 @@ export default class Itako {
   }
 
   /**
-  * the source after the transform in transformers, read in readers (higher level api)
+  * execute read method of readers (higher level api)
   *
   * @method read
-  * @param {string} source - a original text
+  * @param {string|object[]} source - a original text or transfromed tokens
   * @param {object} [transformOptions={}] - change the default options of the transform/read method
   * @returns {promise<object>} readEnd - return the tokens after the end of speak
   */
@@ -123,8 +123,11 @@ export default class Itako {
       transformOptions,
     );
 
-    const tokens = this.transform(source, opts);
+    const tokens = source instanceof Array ? source : this.transform(source, opts);
     const readOptions = _get(this.options, 'read', {});
+    if (readOptions.preload) {
+      this.preload(tokens);
+    }
     if (readOptions.serial) {
       if (this.current === undefined) {
         this.current = Promise.resolve();
@@ -141,6 +144,33 @@ export default class Itako {
     }
 
     return this.readSerial(tokens).then(() => tokens);
+  }
+
+  /**
+  * execute preload method of reader for read (in parallel)
+  *
+  * @method preload
+  * @param {object[]} tokens - a transfromed tokens
+  * @returns {undefined}
+  */
+  preload(tokens) {
+    tokens.forEach(token => {
+      for (let i = 0; i < this.readers.length; i++) {
+        const reader = this.readers[i];
+        const name = reader.name || 'anonymous';
+        const { disable, options } = this.getOption(['readers', name], {});
+        if (disable) {
+          continue;
+        }
+        if (typeof reader.preload !== 'function') {
+          continue;
+        }
+        if (reader.preload(token, options)) {
+          token.setMeta('preloader', reader);
+          break;
+        }
+      }
+    });
   }
 
   /**
@@ -191,11 +221,11 @@ export default class Itako {
         }
 
         const name = reader.name || 'anonymous';
-        const { disable, options: opts } = this.getOption(['readers', name], {});
+        const { disable, options } = this.getOption(['readers', name], {});
         if (disable) {
           return token;
         }
-        const result = reader.read(token, opts);
+        const result = reader.read(token, options);
         if (this.isPromise(result)) {
           token.setMeta('reader', reader);
         }

@@ -49,3 +49,21 @@ export const delayReader = {
     return new Promise(resolve => setTimeout(resolve, this.delay));
   },
 };
+
+export const preloadReader = {
+  name: 'preload',
+  delay: 100,
+  preload(token) {
+    token.setMeta('preloadBegin', Date.now());
+    token.setMeta('preload', new Promise(resolve => setTimeout(resolve, this.delay))
+    .then(() => {
+      token.setMeta('preloadEnd', Date.now());
+      return token;
+    }));
+
+    return true;
+  },
+  read(token) {
+    return token.meta.preload;
+  },
+};
