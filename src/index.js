@@ -1,5 +1,4 @@
 // dependencies
-import Promise from 'bluebird';
 import Token from 'itako-token';
 import _flattenDeep from 'lodash.flattendeep';
 import _get from 'lodash.get';

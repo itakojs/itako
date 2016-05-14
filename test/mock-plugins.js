@@ -1,6 +1,5 @@
 import Itako from '../src';
 import Token from 'itako-token';
-import Promise from 'bluebird';
 
 export const cloneTransformer = {
   name: 'clone',
