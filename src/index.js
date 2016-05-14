@@ -1,12 +1,12 @@
 // dependencies
+import AsyncEmitter from 'carrack';
 import Token from 'itako-token';
 import _flattenDeep from 'lodash.flattendeep';
 import _get from 'lodash.get';
 import _set from 'lodash.set';
 
 // @class Reader
-// @extends AsyncEmitter (soon)
-export default class Itako {
+export default class Itako extends AsyncEmitter {
   static createToken(...args) {
     return new Token(...args);
   }
@@ -17,6 +17,7 @@ export default class Itako {
   * @param {object} [options={}] - a customize behavior
   */
   constructor(readers = [], transformers = [], options = {}) {
+    super();
     this.transformers = transformers;
     this.readers = readers;
     this.options = { ...options };
@@ -166,6 +167,7 @@ export default class Itako {
         }
         if (reader.preload(token, options)) {
           token.setMeta('preloader', reader);
+          this.emit('preload', token);
           break;
         }
       }
@@ -182,20 +184,23 @@ export default class Itako {
   * @returns {promise<undefined>} readEnd - fulfill after the end of speak
   */
   readSerial(tokens) {
-    return tokens.reduce(
-      (promise, currentToken) => promise.then(() => {
-        const token = this.readToken(currentToken);
+    return this.emitParallel('before-read', tokens)
+    .then(() => tokens.reduce(
+        (promise, currentToken) => promise.then(() => {
+          const token = this.readToken(currentToken);
 
-        // if the promise isn't returned by a plugin read method, throw an exception
-        if (this.isPromise(token) === false) {
-          const { type, value } = token;
-          return Promise.reject(new Error(`unexpected token "${type}:${value}"`));
-        }
+          // if the promise isn't returned by a plugin read method, throw an exception
+          if (this.isPromise(token) === false) {
+            const { type, value } = token;
+            return Promise.reject(new Error(`unexpected token "${type}:${value}"`));
+          }
 
-        return token;
-      }),
-      Promise.resolve(null),
-    );
+          return token;
+        }),
+        Promise.resolve(null),
+      )
+    )
+    .then(() => this.emitParallel('after-read', tokens));
   }
 
   /**
@@ -227,6 +232,7 @@ export default class Itako {
         const result = reader.read(token, options);
         if (this.isPromise(result)) {
           token.setMeta('reader', reader);
+          this.emit('read', token);
         }
         return result;
       },
