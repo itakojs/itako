@@ -1,4 +1,5 @@
 // dependencies
+import Promise from 'bluebird';
 import AsyncEmitter from 'carrack';
 import Token from 'itako-token';
 import _flattenDeep from 'lodash.flattendeep';

@@ -1,7 +1,6 @@
 {
   "plugins": [
-    "transform-object-assign",
-    "transform-bluebird"
+    "transform-object-assign"
   ],
   "env": {
     "development": {
